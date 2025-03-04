@@ -1,11 +1,3 @@
-/*
- * CS106L Assignment 2: Marriage Pact
- * Created by Haven Whitney with modifications by Fabio Ibanez & Jacob Roberts-Baca.
- *
- * Welcome to Assignment 2 of CS106L! Please complete each STUDENT TODO
- * in this file. You do not need to modify any other files.
- *
- */
 
 #include <fstream>
 #include <iostream>
@@ -13,49 +5,67 @@
 #include <set>
 #include <string>
 #include <unordered_set>
+#include<sstream>
 
-std::string kYourName = "STUDENT TODO"; // Don't forget to change this!
+std::string kYourName = "Steve Tene"; 
 
-/**
- * Takes in a file name and returns a set containing all of the applicant names as a set.
- *
- * @param filename  The name of the file to read.
- *                  Each line of the file will be a single applicant's name.
- * @returns         A set of all applicant names read from the file.
- *
- * @remark Feel free to change the return type of this function (and the function
- * below it) to use a `std::unordered_set` instead. If you do so, make sure
- * to also change the corresponding functions in `utils.h`.
- */
-std::set<std::string> get_applicants(std::string filename) {
-  // STUDENT TODO: Implement this function.
-}
 
-/**
- * Takes in a set of student names by reference and returns a queue of names
- * that match the given student name.
- *
- * @param name      The returned queue of names should have the same initials as this name.
- * @param students  The set of student names.
- * @return          A queue containing pointers to each matching name.
- */
-std::queue<const std::string*> find_matches(std::string name, std::set<std::string>& students) {
-  // STUDENT TODO: Implement this function.
-}
 
-/**
- * Takes in a queue of pointers to possible matches and determines the one true match!
- *
- * You can implement this function however you'd like, but try to do something a bit
- * more complicated than a simple `pop()`.
- *
- * @param matches The queue of possible matches.
- * @return        Your magical one true love.
- *                Will return "NO MATCHES FOUND." if `matches` is empty.
- */
+
+std::unordered_set<std::string> get_applicants(std::string filename) {
+  std::string name;
+  std::unordered_set<std::string> names_set;
+  names_set.reserve(1000);
+  std::ifstream file(filename);
+  while(std::getline(file,name,'\n')){
+    names_set.insert(name);
+    
+  };
+  file.close();
+  return names_set;
+};
+
+std::pair<std::string,std::string> split(std::string nombre){
+  std::pair<std::string, std::string> separate_name;
+  std::istringstream iss(nombre);
+  iss >> separate_name.first >> separate_name.second;
+  return separate_name;
+};
+
+std::queue<const std::string*> find_matches(std::string name, std::unordered_set<std::string>& students) {
+  std::pair<std::string, std::string>aux= split(name);
+  std::queue<const std::string*> result;
+  for (auto i= students.begin();i!=students.end(); ++i) {
+    std::pair<std::string, std::string> compr = split(*i);
+    if(!compr.first.empty() && !compr.second.empty()){
+      if(compr.first[0]==aux.first[0] && compr.second[0]==aux.second[0]){
+        result.push(&(*i));  
+      };
+    };
+  };
+
+  return result;
+};
+
+
 std::string get_match(std::queue<const std::string*>& matches) {
-  // STUDENT TODO: Implement this function.
-}
+  std::string res_2;
+  int matchesLength=matches.size();
+  std::string best_match=*matches.front();
+  int div=2;
 
-/* #### Please don't remove this line! #### */
+  if(!matches.empty()){
+      int half= matchesLength/div;
+      for(int i; i<half; ++i){  
+        matches.pop();
+        std::string best_match = *matches.front();
+      };  
+    std::cout<<best_match;
+    return best_match;
+    }else{
+    return "NO MATCHES FOUND";
+  };
+};
+
+
 #include "autograder/utils.hpp"
