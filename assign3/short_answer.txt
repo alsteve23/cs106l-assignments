@@ -5,7 +5,7 @@ Make a Class
 ------------
 
 Q1. What’s const-correctness and why is it important?
-A1. TODO
+A1. The const-correctness is a good practice that ensres that specific values do not be changed by mistake. In this clase, ensures that the getter functions do not chage the attributes values.
 
 Q2. Is your class const-correct? How do you know?
-A2. TODO
+A2. My class is const-correct because all the getters a declared in a const way.
